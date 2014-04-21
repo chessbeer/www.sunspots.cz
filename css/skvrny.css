@@ -1,0 +1,29 @@
+#menu_skvrny {
+
+
+}
+
+#menu_skvrny ul li {
+    margin: 0px;
+    padding: 0px;
+    float: left;
+  
+}
+
+#menu_skvrny ul li a {
+    padding: 10px;
+    display: block;
+  
+}
+
+
+#skvrny_content {
+  clear:left;
+overflow: auto;
+max-height: 550px;
+
+}
+
+ul.menu_skvrny {
+    list-style: none outside none;
+}

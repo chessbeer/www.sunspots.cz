@@ -1,0 +1,28 @@
+{block content}
+
+<h1 n:block="title">Kontakt</h1>
+
+
+{form kontaktForm}
+<div class="kontakt-form">
+        {control $form errors}
+
+        <div class="pair">
+                {label subject /}
+                <div class="input">{input subject}</div>
+        </div>
+        <div class="pair">
+                {label message /}
+                <div class="message">{input message}</div>
+        </div>
+       
+
+        <div class="pair">
+                <div class="send_k">{input send}</div>
+        </div>
+</div>
+
+
+
+{/form}
+{/block}

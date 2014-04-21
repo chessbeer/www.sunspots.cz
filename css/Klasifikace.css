@@ -1,0 +1,43 @@
+#img img {
+width: 100%;
+height: auto;
+}
+
+
+#cropp {
+max-height: 650px;
+font-size: 22px;
+}
+
+.show_form > img {
+max-height: 600px;
+position: relative;
+margin: 10px;
+}
+
+
+#z:hover + #z_img{
+display:block;
+
+}
+
+#z_img {
+display:none;
+position: absolute;
+  z-index:1;
+top: 5px;
+right: 5px;
+width:50%;
+
+}
+
+#clear2 {
+clear: both;
+padding-top: 5px;
+}
+
+
+
+#other_class {
+padding-top: 100px;
+}

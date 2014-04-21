@@ -1,0 +1,118 @@
+{**
+ * My Application layout template.
+ *
+ * @param string   $basePath web base path
+ * @param string   $robots   tell robots how to index the content of a page (optional)
+ * @param array    $flashes  flash messages
+ *}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-language" content="en" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="robots" content="{$robots}" n:ifset="$robots">
+
+	<title>{block title|striptags}Homepage{/block} | Klasifikace slunečních skvrn</title>
+
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css" />
+	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css" />
+  <link rel="stylesheet" href="{$basePath}/css/jquery.Jcrop.css" type="text/css"  />
+  <link rel="stylesheet" href="{$basePath}/css/demos.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" media="all" href="{$basePath}/css/main.css"> 
+   <link rel="stylesheet" type="text/css" media="all" href="{$basePath}/css/skvrny.css">  
+  <link rel="stylesheet" href="{$basePath}/css/styleZoom.css" type="text/css" />
+
+        {foreach $styles as $style}
+        
+          <link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/{$style}">
+        {/foreach}
+	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+     
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script> 
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="{$basePath}/js/jquery.Jcrop.js"></script>
+      <script type="text/javascript" src="{$basePath}/js/jquery.rwdImageMaps.js"></script>
+      <script type="text/javascript" src="{$basePath}/js/jquery.dependent-selects.js"></script>  
+
+  <script type="text/javascript" src="{$basePath}/js/klas.js"></script>
+	<script type="text/javascript" src="{$basePath}/js/netteForms.js"></script>
+
+    
+    <script type="text/javascript" src="{$basePath}/js/jquery-panzoom.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/jquery.mousewheel.js"></script>
+      
+
+  
+        {foreach $scripts as $script}
+          <script type="text/javascript" src="{$basePath}/js/{$script}"></script>
+        {/foreach}
+
+	{block head}{/block}
+</head>
+
+<body>
+  <div id="container">
+    <div id="header">
+    <div id="user-zone">
+            
+           
+            <ul class="menu">
+           {if !empty($session->user['email'])}
+             <h3>{$session->user['email']}</h3>
+               <li><a n:href="signOut!" title="Odhlásit se">Odhlášení</a></li>
+                <li><a n:href="Mojeklasifikace:" title="Moje klasifikace">Moje klasifikace</a></li>
+                  
+              {else}
+              
+                
+                <li><a n:href="Registration:" title="Registration">Registrace</a></li>
+                <li><a n:href="SignIn: url=>$session->url" title="Login">Přihlášení</a></li>
+                 {/if}
+            </ul>
+            
+          </div>
+     </div>
+        
+        <div id="menu-container">
+        {block menu}
+        
+          <div id="menu">
+            <ul class="menu">
+              <li><a n:href="Homepage:" title="Klasifikace">Klasifikace</a></li>
+              <li><a n:href="Informace:" title="Informace">O projektu</a></li>
+              <li><a n:href="Skvrny:" title="Sluneční skvrny">Skvrny</a></li>
+              <li><a n:href="Kontakt:" title="Kontaktujte nás">Kontakt</a></li>
+              <li><a n:href="Napoveda:" title="Zobrazte nápovědu">Nápověda</a></li>
+              {if !empty($session->user['admin'])}
+              <li><a n:href="Admin:" title="Administrace">Administrace</a></li>
+              {/if}
+              <div class="clearer"></div>
+            </ul>
+          </div>
+          
+        {/block}
+    </div>
+
+    <div id="content">
+
+	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+
+	{include #content}
+    </div>
+    <div id="footer-container">
+    <div id="footer">
+       
+    <ul class="menu2">
+              <li><a href="mailto:trepkjan@fit.cvut.cz" title="Email">© 2013 Jan Trepka</a></li>
+              <li><a n:href="Homepage:" title="Klasifikace slunečních skvrn">Klasifikace slunečních skvrn</a></li>
+          
+            </ul>
+ 
+    </div>
+    </div>
+  </div>
+</body>
+</html>

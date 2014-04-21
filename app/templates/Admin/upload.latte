@@ -1,0 +1,43 @@
+{block content}
+
+{form uploadForm}
+<div class="sign-in-form">
+        {control $form errors}
+
+        <div class="pair">
+                
+                <div class="input">{input obrazky}</div>
+        </div>
+        <div class="pair">
+                {label year /}
+                <div class="input">{input year}</div>
+        </div>
+        <div class="pair">
+                {label month /}
+                <div class="input">{input month}</div>
+        </div>
+        <div class="pair">
+                {label day /}
+                <div class="input">{input day}</div>
+        </div>
+        <div class="pair">
+                {label time /}
+                <div class="input">{input time}</div>
+        </div>
+        
+        <div class="pair">
+                {label comment /}
+                <div class="comment">{input comment}</div>
+        </div>
+   
+        <div class="pair">
+                <div class="input">{input send}</div>
+        </div>
+</div>
+
+
+
+{/form}
+
+<a n:href="Admin:" title="Administrace">Zpět</a>
+{/block}

@@ -1,0 +1,165 @@
+	{block head}
+  
+
+		<script type="text/javascript">
+  
+     $(function(){
+     
+         $('#frmklasifikaceForm-klasifikace').dependentSelects();        
+        
+       
+});
+          $(function(){
+          if( $('#dependent-sub').val() === '' ){
+        alert('Dopln udaje');
+        }
+          });
+          </script>
+          
+    
+    {/block}
+
+{block content}
+
+<h1 n:block="title">Klasifikuj skvrny:</h1> 
+<h3>Snímek s id {substr($num, 0, -2)}, oblast číslo {substr($num, -1)}</h3>
+
+<div id="cropp">
+<a href="" id="z">McIntoshova klasifikace</a>
+<img src="{$basePath}/images/klasifikace.jpg" id="z_img" width="100%"/>  
+  <div id="clear"></div>
+
+  {if $crop_count > 1}
+{if $number == 1}
+<a n:href="this id =>substr($num, 0, -2).'-'.$crop_count"><img alt="previous" src="{$basePath}/images/arrow_l.png" width="50" height="50"></a>
+{else}      
+<a n:href="this id =>substr($num, 0, -2).'-'.(($number+($crop_count-1))%$crop_count)"><img alt="previous" src="{$basePath}/images/arrow_l.png" width="50" height="50"></a>
+{/if}
+{/if}
+
+ <a title="img" class="show_form" href="#">
+<img src="{$basePath}/obrazky/{substr($num, 0, -2)}/{substr($num, -1)}.jpg">
+</a>
+
+{if $crop_count > 1}
+<a n:href="this id =>substr($num, 0, -2).'-'.(($number%$crop_count)+1)"><img alt="previous" src="{$basePath}/images/arrow_r.png" width="50" height="50"></a>
+{/if}
+
+
+{if !empty($zpc) && $zpc != '61'}
+ <img src="{$basePath}/images/ok.png"/> 
+{/if}
+<div id="clear2">
+<a title="img" class="show_form" href="#">Klasifikovat</a>
+</div>  
+</div>
+
+
+
+<div id="form_wrapper">
+
+{if !empty($session->user['email'])}
+
+    {form klasifikaceForm}
+<div class="klasifikace-form">
+        {control $form errors}
+
+        <div class="pair">
+                {label klasifikace /}
+                <div class="input">{if !empty($zpc)}
+                {input klasifikace, value => $zpc}
+                {else}{input klasifikace}{/if}</div>         
+        </div>
+  
+
+
+        <div class="pair">
+                {label comment /}
+                <div class="input">{if !empty($comment)}
+                {input comment, value => $comment}
+                {else}{input comment}{/if}</div>
+        </div>
+         <div class="pair">
+                {label num /}
+                <div class="num">
+                {input num, value => $num}
+                </div>
+        </div>
+       
+
+        <div class="pair">
+                <div class="klas_send">{input send}</div>
+        </div>
+        
+        <div class="pair">
+                <div class="klas_cancel">{input cancel}</div>
+        </div>
+        <div id="clear"></div>
+</div>
+
+
+
+{/form}
+{else}
+Pro klasifikaci se musíš <a n:href="SignIn:" title="Přihlášení">přihlásit</a> / <a n:href="Registration:" title="Registrace">registrovat</a>.
+{/if}
+</div>
+
+     
+{if !empty($session->user['admin']) && $session->user['admin'] == 2}
+<div id="other_class">
+{if !empty ($other_class)}
+<h2>Klasifikace ostatních uživatelů</h2>
+<ul>
+{foreach $other_class as $class}
+
+<li>{$class[0]}
+     {form opravaForm}
+<div class="klasifikace-form">
+        {control $form errors}
+
+         <div class="pair">
+                {label num /}
+                <div class="num">
+                {input num, value => $num}
+                </div>
+        </div>
+         <div class="pair">
+                {label user /}
+                <div class="user">
+                {input user, value => $class[1]}
+                </div>
+        </div>
+         <div class="pair">
+                {label zpc /}
+                <div class="zpc">
+                {input zpc, value => $zpc}
+                </div>
+        </div>
+        <div class="pair">
+                {label user_zpc /}
+                <div class="user_zpc">
+                {input user_zpc, value => $class[2]}
+                </div>
+        </div>
+
+        <div class="pair">
+                <div class="send">{input send}</div>
+        </div>         
+{/form}
+</li>
+
+{/foreach}
+</ul>  
+{else}
+<h2>Skvrna nebyla nikým klasifikována</h2>
+   {/if}
+</div>
+
+
+{/if}
+<div id="back">
+<a n:href="Homepage: id=> $back">Zpět</a>  
+</div>
+
+{/block}

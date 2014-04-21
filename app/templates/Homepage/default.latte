@@ -1,0 +1,161 @@
+	{block head}
+  
+
+		<script type="text/javascript">
+			$(document).ready(function () {
+      
+        function initPanZoom() {
+          $('#pan img').panZoom({
+            'zoomIn'   	: 		$('#zoomin'),
+            'zoomOut' 	: 		$('#zoomout'),
+            'panUp'		  :		$('#panup'),
+            'panDown'		:		$('#pandown'),
+            'panLeft'		:		$('#panleft'),
+            'panRight'	:		$('#panright'),
+            'fit'       :   $('#fit'),
+            'destroy'   :   $('#destroy'),
+            'out_x1'    :   $('#x1'),
+            'out_y1'    :   $('#y1'),
+            'out_x2'    :   $('#x2'),
+            'out_y2'    :   $('#y2'),
+            'directedit':   true,
+            'debug'     :   false
+          });
+           
+        };
+        
+         initPanZoom();
+       
+				// init the image switcher
+				$('#images img').bind('click', function () {
+					$('#pan img').attr('src', $(this).attr('src'));
+ 
+				});
+
+        // init the init button (for testing destroy/recreate)
+        $('#reinit').bind('click', function (event) {
+          if ($('#pan img').data('panZoom')) {
+            alert('Click destroy before trying to re-initialise panZoom');
+            return;
+          }
+          event.preventDefault();
+           
+          initPanZoom();
+              
+        }); 
+
+          
+         $('img[usemap]').rwdImageMaps();
+         
+			});
+       
+       $('img[usemap]').rwdImageMaps();
+
+        
+
+       
+        
+        
+		</script>
+
+{/block}
+
+{block content}
+
+<h1 n:block="title">Klasifikace slunečních skvrn</h1>
+
+
+<div id="photos">
+{if $count == 0}
+Nejsou k dispozici zadne snimky.
+
+{else}
+{if $count >1}
+<div id="l_a">
+<a n:href="this id => (($num+($count-1))%$count)"><img alt="previous" src="{$basePath}/images/arrow_l.png" width="50" height="50"></a>
+</div>
+{else}
+<div id="l_a">
+<a n:href="this id => (($num+($count-1))%$count)"><img alt="previous" src="{$basePath}/images/arrow_l.png" width="50" height="50" style="visibility:hidden"></a>
+</div>
+{/if}
+
+
+<div id="img">   
+
+<div id="pan">
+<img id="jay" alt="klasifikace" src="{$basePath}/obrazky/{$images[$num]}" usemap="#spots"  />
+ {if $crop_images_count[$num] != 0}
+<map name="spots">
+<ul>
+{for $i=1;  $i <= $crop_images_count[$num]; $i++}
+ <li><a n:href="Klasifikace: id=>substr($images[$num], 0, -4).'-'.$i" shape="rect" coords="{$crop_images[$num][$i][1]},{$crop_images[$num][$i][3]},{$crop_images[$num][$i][2]},{$crop_images[$num][$i][4]}" alt="skvrna" title="skvrna{$i}" /></a></li>
+
+{/for}
+</ul>
+</map>
+{/if}
+</div>
+</div>
+{if $count >1}
+<div id="r_a">
+<a n:href="this id => (($num+1)%$count)"><img alt="next" src="{$basePath}/images/arrow_r.png" width="50" height="50"></a>
+</div>
+{else}
+<div id="r_a">
+<a n:href="this id => (($num+1)%$count)"><img alt="next" src="{$basePath}/images/arrow_r.png" width="50" height="50" style="visibility:hidden"></a>
+</div>
+{/if}
+<div id="controls-container">
+<div id="controls">
+     
+        <a id="zoomin" href="#">
+          <img src="{$basePath}/images/zoom_in.png"><br />
+          Přiblížit
+        </a>
+        <a id="zoomout" href="#">
+          <img src="{$basePath}/images/zoom_out.png"><br />
+          Oddálit
+        </a>
+        <a id="fit" href="#">
+          <img src="{$basePath}/images/arrow_out.png"><br />
+          Původní velikost
+        </a>
+          </div>
+      <div id="done">   
+             
+       {if $class_done[$num]}
+ <img src="{$basePath}/images/ok2.png"/> 
+{else}
+<img src="{$basePath}/images/ok2.png" style="visibility: hidden"/> 
+{/if}
+       </div>
+</div>        
+
+
+  <div id="images">
+         <h3>Snímky</h3>
+        <div id="popis">
+        Snímek ze Štefánikovy observatoře: <br />
+Datum: {substr($images[$num], 10, 2)}. {substr($images[$num], 7, 2)}. {substr($images[$num], 2, 4)}
+Čas: {substr($images[$num], 13, 2)}:{substr($images[$num], 16, 2)} <br />
+        </div>
+        <img alt="klasifikace" src="{$basePath}/obrazky/{$images[$num]}" width="150" height="134">
+        <img alt="klasifikace_nasa" src="{$basePath}/obrazky/{$images_nasa[$num]}" width="150" height="134">
+        <div id="popis">
+        Nejbližší existující snímek od NASA: <br />
+Datum: {substr($images_nasa[$num], 10, 2)}. {substr($images_nasa[$num], 7, 2)}. {substr($images_nasa[$num], 2, 4)}
+Čas: {substr($images_nasa[$num], 13, 2)}:{substr($images_nasa[$num], 16, 2)}  <br />
+       </div>
+        </div>
+       <div id="clear">
+       {if !empty($comment[$num])}
+       Komentář autora: {$comment[$num]}{/if}
+
+       
+      </div>
+      
+{/if}
+</div>
+
+{/block}

@@ -1,0 +1,7 @@
+#my_classification > ul > li{
+padding-bottom: 20px;
+
+}
+
+#my_class > div { display: none; }
+#my_class:hover>div { display: block; }

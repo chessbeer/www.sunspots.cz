@@ -1,0 +1,16 @@
+{block title}Administrace{/block}
+
+{block content}
+
+<h2>Vyber akci</h2>  
+
+
+<ul>
+<li><a n:href="Admin:Upload" title="Upload">Upload snímku</a></li>
+<li><a n:href="Admin:Contact" title="Contact">Zobraz zprávy</a></li>
+{if !empty($session->user['admin']) && $session->user['admin'] == 2}
+<li><a n:href="Admin:User" title="User">Nastavit práva uživatelů</a></li>
+<li><a n:href="Admin:Image" title="Image">Vybrat oblasti se skvrnami</a></li>
+{/if}
+</ul>
+{/block}

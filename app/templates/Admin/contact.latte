@@ -1,0 +1,12 @@
+{block content}
+
+<h1 n:block="title">Zprávy:</h1>
+
+ <ul>
+{foreach $result as $obj}
+<li>{$obj[email]} {$obj[subject]} {$obj[message]}</li>
+{/foreach}
+</ul>
+
+<a n:href="Admin:" title="Administrace">Zpět</a>
+{/block}

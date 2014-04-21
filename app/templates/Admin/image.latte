@@ -1,0 +1,94 @@
+	{block head}
+  
+		<script type="text/javascript">
+      $(function(){
+      $('#target').Jcrop({
+      aspectRatio: 1.6,
+onSelect: updateCoords
+});
+
+});
+
+function updateCoords(c)
+{
+$('#frmcropForm-x1').val(c.x);
+$('#frmcropForm-y1').val(c.y);
+$('#frmcropForm-w').val(c.w);
+$('#frmcropForm-h').val(c.h);
+$('#frmcropForm-x2').val(c.x + c.w);
+$('#frmcropForm-y2').val(c.y + c.h);
+};
+
+function checkCoords()
+{
+if (parseInt($('#w').val())) return true;
+alert('Please select a crop region then press submit.');
+return false;
+};
+
+
+
+</script>
+
+{/block}
+
+{block content}
+ 
+{if $count == 0}
+Nejsou k dispozici zadne snimky.
+
+{else}
+<div id="l_a">
+
+<a n:href="this id => (($num+($count-1))%$count)"><img alt="previous" src="{$basePath}/images/arrow_l.png" width="50" height="50"></a>
+</div>
+<div id="crop">
+ <img src="{$basePath}/obrazky/{$images[$num]}" id="target" alt="[Jcrop Example]"/>
+</div> 
+
+<div id="r_a">
+<a n:href="this id => (($num+1)%$count)"><img alt="next" src="{$basePath}/images/arrow_r.png" width="50" height="50"></a>
+</div>
+
+<div id="crop_form">
+{form cropForm}
+<div class="sign-in-form">
+        {control $form errors}
+
+        
+                <div class="x1">{input x1}</div>
+      
+                <div class="y1">{input y1}</div>
+   
+                <div class="x2">{input x2}</div>
+        
+                <div class="y2">{input y2}</div>
+      
+                <div class="w">{input w}</div>
+      
+                <div class="h">{input h}</div>
+                
+                <div class="img">{input img, value => substr($images[$num], 0, -4)}</div>
+                
+                 <div class="num">{input num, value => $crop_images[$num]+1}</div>
+                <div class="submit">{input submit}</div>
+      
+</div>
+
+ {/form} 
+ </div>
+ <div id="exists_images">  
+<h2>Jiz existujici oblasti se skvrnami {$crop_images[$num]}</h2> 
+{if $crop_images[$num] != 0}
+{for $i=1;  $i <= $crop_images[$num]; $i++}
+<img src="{$basePath}/obrazky/{substr($images[$num], 0, -4)}/{$i}.jpg" />
+{/for}
+</div>
+{/if} 
+
+  
+
+{/if}
+
+<a n:href="Admin:" title="Administrace">Zpět</a>
+{/block}

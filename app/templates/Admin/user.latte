@@ -1,0 +1,27 @@
+{block content}
+
+{form userForm}
+<div class="sign-in-form">
+        {control $form errors}
+
+        <div class="pair">
+                 {label user /}
+                <div class="input">{input user}</div>
+        </div>
+        <div class="pair">
+                {label role /}
+                <div class="input">{input role}</div>
+        </div>
+       
+   
+        <div class="pair">
+                <div class="input">{input send}</div>
+        </div>
+</div>
+
+
+
+{/form}
+
+<a n:href="Admin:" title="Administrace">Zpět</a>
+{/block}

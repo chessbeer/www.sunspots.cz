@@ -9,11 +9,11 @@ common:
     mongo:
       dbhost: troup.mongohq.com:10003 
       dbname: sunspots
-      user: jay
-      password: 881117
+      user: 
+      password: 
     facebook:
-      appId: '90105269891' 
-      secret: 'd60d6c07c5cf5f44187846a49a864308'
+      appId: '' 
+      secret: ''
   php:
     date.timezone: Europe/Prague
     # zlib.output_compression: yes

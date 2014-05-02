@@ -1,0 +1,21 @@
+{block content}
+
+<h1 n:block="title">Všechny klasifikace</h1> 
+
+<div id="my_classification">
+
+{if $count!=0}
+<ul>
+{for $i=1;  $i <= $count; $i++}
+<li>Snímek ID: <a id="my_class">{$images[$i]}<div><img src="{$basePath}/obrazky/{$images[$i]}.jpg" width="80%"/></div></a>, oblast se skvrnami číslo: 
+<a id="my_class">{$number[$i]}<div><img src="{$basePath}/obrazky/{$images[$i]}/{$number[$i]}.jpg" width="50%"/></div></a>, klasifikace uživatele {$user[$i]} je: {$mcintosh[$zpc[$i]]} {if !empty($comment[$i])}a komentář: {$comment[$i]}{/if} 
+
+{/for}
+</ul>
+{else}
+Zatím jste neklasifikoval žádnou skvrnu.
+{/if}
+</div>
+
+
+{/block}

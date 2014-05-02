@@ -14,7 +14,7 @@ class RegistrationForm extends Form {
        
         
             $this->addText('email', 'Email:')->setRequired('Email je povinný!')
-                    ->addRule(Form::EMAIL, 'Zadej emailovou adresu.');
+                    ->addRule(Form::EMAIL, 'Zadej platnou emailovou adresu.');
        
                 
             $this->addPassword('password', 'Heslo:', 20)

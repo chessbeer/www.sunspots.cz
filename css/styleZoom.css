@@ -6,7 +6,7 @@ div#pan {
 	width: 700px;
 	height: 500px;
 	overflow: hidden;
- 
+
   margin-left: auto ;
   margin-right: auto ;
   
@@ -35,26 +35,14 @@ div#controls a:hover {
 }
 
 div#output, div#images {
-	height: 200px;
+	height: 150px;
 }
-div#popis {
-float: left;
+div.popis {
+clear: both;
 width:auto;
+text-align: center;
 } 
 
-
-div#images {
-
-  clear: right;
-	margin-right: 0;
-  
-  text-align: center;
-}
-#images > img {
-float:left;
-margin-left: 25px;
-margin-right: 25px;
-}
 
 
 div#attribution {

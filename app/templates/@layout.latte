@@ -5,9 +5,9 @@
  * @param string   $robots   tell robots how to index the content of a page (optional)
  * @param array    $flashes  flash messages
  *}
-
-<!DOCTYPE html>
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-language" content="en" />
@@ -35,7 +35,11 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
       <script type="text/javascript" src="{$basePath}/js/jquery.Jcrop.js"></script>
       <script type="text/javascript" src="{$basePath}/js/jquery.rwdImageMaps.js"></script>
-      <script type="text/javascript" src="{$basePath}/js/jquery.dependent-selects.js"></script>  
+      <script type="text/javascript" src="{$basePath}/js/jquery.dependent-selects.js"></script>
+      <script type="text/javascript" src="{$basePath}/js/jquery.maphilight.min.js"></script>
+      
+                                     
+       
 
   <script type="text/javascript" src="{$basePath}/js/klas.js"></script>
 	<script type="text/javascript" src="{$basePath}/js/netteForms.js"></script>
@@ -55,24 +59,46 @@
 
 <body>
   <div id="container">
-    <div id="header">
-    <div id="user-zone">
-            
-           
-            <ul class="menu">
-           {if !empty($session->user['email'])}
+    
+      <div id="header">
+          <a n:href="Homepage:" title="Klasifikace"></a>
+       <div id="user-zone">
+            {if !empty($session->user['email'])}
              <h3>{$session->user['email']}</h3>
-               <li><a n:href="signOut!" title="Odhlásit se">Odhlášení</a></li>
-                <li><a n:href="Mojeklasifikace:" title="Moje klasifikace">Moje klasifikace</a></li>
-                  
-              {else}
+            
+          <div id="user-zone2">
+          <div class="user-zone3">
+           <ul class="menu">
+            
+            
+          <li><a n:href="Mojeklasifikace:" title="Moje klasifikace">Moje klasifikace</a></li>
+          
+           {if !empty($session->user['admin'])}
+                <li><a n:href="Allklasifikace:" title="Všechny klasifikace">Všechny klasifikace</a></li>  
               
-                
-                <li><a n:href="Registration:" title="Registration">Registrace</a></li>
-                <li><a n:href="SignIn: url=>$session->url" title="Login">Přihlášení</a></li>
                  {/if}
             </ul>
-            
+               </div>
+              <div class="user-zone4">        
+             
+              <ul class="menu">
+               
+               <li><a n:href="signOut!" title="Odhlásit se">Odhlášení</a></li>
+                <li><a n:href="Edit:" title="Úprava osobních dat">Úprava dat</a></li>  
+                 </ul>
+                 </div>
+                </div>
+              
+              {else}
+                  <div id="user-zone22">
+                  <ul class="menu">
+                <li><a n:href="Registration:" title="Registration">Registrace</a></li>
+                <li><a n:href="SignIn: url=>$session->url" title="Login">Přihlášení</a></li>
+                 </div>
+                 {/if}
+           
+              <div class="clearer"></div>
+           
           </div>
      </div>
         
@@ -89,8 +115,10 @@
               {if !empty($session->user['admin'])}
               <li><a n:href="Admin:" title="Administrace">Administrace</a></li>
               {/if}
-              <div class="clearer"></div>
+              
+             
             </ul>
+             <div class="clearer"></div>
           </div>
           
         {/block}

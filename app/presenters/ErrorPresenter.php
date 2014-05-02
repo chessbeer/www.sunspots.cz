@@ -32,3 +32,5 @@ class ErrorPresenter extends BasePresenter {
     } 
 
 }
+
+}

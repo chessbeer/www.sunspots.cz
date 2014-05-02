@@ -4,7 +4,7 @@
 
  <ul>
 {foreach $result as $obj}
-<li>{$obj[email]} {$obj[subject]} {$obj[message]}</li>
+<li>{$obj[timestamp]} {$obj[email]} {$obj[subject]} {$obj[message]} {$obj[register]}</li>
 {/foreach}
 </ul>
 

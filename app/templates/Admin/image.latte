@@ -35,21 +35,43 @@ return false;
 {block content}
  
 {if $count == 0}
-Nejsou k dispozici zadne snimky.
+Nejsou k dispozici žádné snímky.
 
 {else}
-<div id="l_a">
+<h3>Snímek číslo {$images[$num]}</h3>
 
+Přejít na snímek číslo:
+{form cropselectForm}
+<div class="sign-in-form">
+        {control $form errors}
+
+                                  
+             <div class="image">{input image, value => image}</div>
+                
+                        <div class="submit">{input submit}</div>
+      
+</div>
+
+ {/form} 
+
+<h5>Vyberte oblast se skvrnami pomocí myší a potvrďte tlačítkem "Vyber oblast". </h5>
+
+
+<div id="l_a">
+{if $count != 1}
 <a n:href="this id => (($num+($count-1))%$count)"><img alt="previous" src="{$basePath}/images/arrow_l.png" width="50" height="50"></a>
+{/if}
 </div>
 <div id="crop">
- <img src="{$basePath}/obrazky/{$images[$num]}" id="target" alt="[Jcrop Example]"/>
+ <img src="{$basePath}/obrazky/{$images[$num]}.jpg" id="target" alt="[Jcrop Example]"/>
 </div> 
 
 <div id="r_a">
+{if $count != 1}
 <a n:href="this id => (($num+1)%$count)"><img alt="next" src="{$basePath}/images/arrow_r.png" width="50" height="50"></a>
+{/if}
 </div>
-
+           
 <div id="crop_form">
 {form cropForm}
 <div class="sign-in-form">
@@ -68,9 +90,9 @@ Nejsou k dispozici zadne snimky.
       
                 <div class="h">{input h}</div>
                 
-                <div class="img">{input img, value => substr($images[$num], 0, -4)}</div>
+                <div class="img">{input img, value => $images[$num]}</div>
                 
-                 <div class="num">{input num, value => $crop_images[$num]+1}</div>
+                 <div class="number">{input number, value => $crop_images[$num]+1}</div>
                 <div class="submit">{input submit}</div>
       
 </div>
@@ -78,10 +100,10 @@ Nejsou k dispozici zadne snimky.
  {/form} 
  </div>
  <div id="exists_images">  
-<h2>Jiz existujici oblasti se skvrnami {$crop_images[$num]}</h2> 
+<h2>Již existující oblasti se skvrnami {$crop_images[$num]}</h2> 
 {if $crop_images[$num] != 0}
 {for $i=1;  $i <= $crop_images[$num]; $i++}
-<img src="{$basePath}/obrazky/{substr($images[$num], 0, -4)}/{$i}.jpg" />
+<img src="{$basePath}/obrazky/{$images[$num]}/{$i}.jpg" />
 {/for}
 </div>
 {/if} 

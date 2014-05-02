@@ -19,7 +19,8 @@
             'out_x2'    :   $('#x2'),
             'out_y2'    :   $('#y2'),
             'directedit':   true,
-            'debug'     :   false
+            'debug'     :   false,
+            'draggable' :   true
           });
            
         };
@@ -52,24 +53,29 @@
        $('img[usemap]').rwdImageMaps();
 
         
-
-       
-        
-        
 		</script>
 
 {/block}
+{block title}Klasifikace slunečních skvrn{/block}
 
 {block content}
-
-<h1 n:block="title">Klasifikace slunečních skvrn</h1>
-
-
-<div id="photos">
 {if $count == 0}
 Nejsou k dispozici zadne snimky.
 
 {else}
+<div id="header2">
+<h2>Snímek {$images_number[$num]} ze Štefánikovy hvězdárny - {substr($images[$num], 10, 2)}. {substr($images[$num], 7, 2)}. {substr($images[$num], 2, 4)}
+{substr($images[$num], 13, 2)}:{substr($images[$num], 16, 2)}</h2>
+</div>
+<div id="question">
+<a href="" id="que"><img src="{$basePath}/images/question.png" alt="question_mark"/></a>
+<img src="{$basePath}/images/help.jpg" id="que_img" width="100%" alt="help"/>  
+
+  </div>
+    <div id="clear" class="clearer"></div>
+
+<div id="photos">
+
 {if $count >1}
 <div id="l_a">
 <a n:href="this id => (($num+($count-1))%$count)"><img alt="previous" src="{$basePath}/images/arrow_l.png" width="50" height="50"></a>
@@ -83,19 +89,29 @@ Nejsou k dispozici zadne snimky.
 
 <div id="img">   
 
+{* <a title="img" class="show_form" href="#"> *}
+
 <div id="pan">
-<img id="jay" alt="klasifikace" src="{$basePath}/obrazky/{$images[$num]}" usemap="#spots"  />
+
+
+ <canvas id="canvas">  </canvas>
+<img id="class_image" alt="klasifikace" src="{$basePath}/obrazky/{$images_number[$num]}.jpg" usemap="#spots"  /> 
  {if $crop_images_count[$num] != 0}
-<map name="spots">
+<map name="spots" id="spots">
 <ul>
 {for $i=1;  $i <= $crop_images_count[$num]; $i++}
- <li><a n:href="Klasifikace: id=>substr($images[$num], 0, -4).'-'.$i" shape="rect" coords="{$crop_images[$num][$i][1]},{$crop_images[$num][$i][3]},{$crop_images[$num][$i][2]},{$crop_images[$num][$i][4]}" alt="skvrna" title="skvrna{$i}" /></a></li>
+ <li><a n:href="Klasifikace: id=>$images_number[$num].'-'.$i" shape="rect" coords="{$crop_images[$num][$i][1]},{$crop_images[$num][$i][3]},{$crop_images[$num][$i][2]},{$crop_images[$num][$i][4]}" title="oblast{$i}"></a></li>
+
+{*<area shape="rect" coords="{$crop_images[$num][$i][1]},{$crop_images[$num][$i][3]},{$crop_images[$num][$i][2]},{$crop_images[$num][$i][4]}" n:href="Klasifikace: id=>substr($images[$num], 0, -4).'-'.$i" alt="skvrna" title="skvrna{$i}" />
+<a n:href="Klasifikace: id=>substr($images[$num], 0, -4).'-'.$i"><div id="border" style="top: {$crop_images[$num][$i][3]}px; left: {$crop_images[$num][$i][1]}px;"></div></a>*}
 
 {/for}
 </ul>
 </map>
 {/if}
+
 </div>
+
 </div>
 {if $count >1}
 <div id="r_a">
@@ -110,51 +126,54 @@ Nejsou k dispozici zadne snimky.
 <div id="controls">
      
         <a id="zoomin" href="#">
-          <img src="{$basePath}/images/zoom_in.png"><br />
+          <img src="{$basePath}/images/zoom_in.png" alt="zoom_in" /><br />
           Přiblížit
         </a>
         <a id="zoomout" href="#">
-          <img src="{$basePath}/images/zoom_out.png"><br />
+          <img src="{$basePath}/images/zoom_out.png" alt="zoom_out" /><br />
           Oddálit
         </a>
         <a id="fit" href="#">
-          <img src="{$basePath}/images/arrow_out.png"><br />
+          <img src="{$basePath}/images/arrow_out.png" alt="original_size" /><br />
           Původní velikost
         </a>
           </div>
+            <div id="images">  
+         <img alt="klasifikace" src="{$basePath}/obrazky/{$images_number[$num]}.jpg" width="150" height="134" title="Štefánikova hvězdárna" />
+        {if strlen($images_nasa[$num]) > 2}
+        <img alt="klasifikace_nasa" src="{$basePath}/obrazky/N_{$images_number[$num]}.jpg" width="150" height="134" title="NASA" />
+        {/if}
+        </div>
+         
       <div id="done">   
              
        {if $class_done[$num]}
- <img src="{$basePath}/images/ok2.png"/> 
+ <img src="{$basePath}/images/ok2.png" alt="ok"/> 
 {else}
-<img src="{$basePath}/images/ok2.png" style="visibility: hidden"/> 
+<img src="{$basePath}/images/ok2.png" style="visibility: hidden" alt="ok"/> 
 {/if}
        </div>
 </div>        
+        
 
-
-  <div id="images">
-         <h3>Snímky</h3>
-        <div id="popis">
-        Snímek ze Štefánikovy observatoře: <br />
-Datum: {substr($images[$num], 10, 2)}. {substr($images[$num], 7, 2)}. {substr($images[$num], 2, 4)}
-Čas: {substr($images[$num], 13, 2)}:{substr($images[$num], 16, 2)} <br />
-        </div>
-        <img alt="klasifikace" src="{$basePath}/obrazky/{$images[$num]}" width="150" height="134">
-        <img alt="klasifikace_nasa" src="{$basePath}/obrazky/{$images_nasa[$num]}" width="150" height="134">
-        <div id="popis">
-        Nejbližší existující snímek od NASA: <br />
-Datum: {substr($images_nasa[$num], 10, 2)}. {substr($images_nasa[$num], 7, 2)}. {substr($images_nasa[$num], 2, 4)}
-Čas: {substr($images_nasa[$num], 13, 2)}:{substr($images_nasa[$num], 16, 2)}  <br />
-       </div>
-        </div>
-       <div id="clear">
+          <div id="popis1" class="popis">
+        Snímek ze Štefánikovy hvězdárny - Datum: {substr($images[$num], 10, 2)}. {substr($images[$num], 7, 2)}. {substr($images[$num], 2, 4)} Čas: {substr($images[$num], 13, 2)}:{substr($images[$num], 16, 2)}<br />
+        {if strlen($images_nasa[$num]) > 2}
+        Snímek od NASA - Datum: {substr($images_nasa[$num], 10, 2)}. {substr($images_nasa[$num], 7, 2)}. {substr($images_nasa[$num], 2, 4)} Čas: {substr($images_nasa[$num], 13, 2)}:{substr($images_nasa[$num], 16, 2)} <br />  
+        {else}
+        Snímek od NASA ze stejného data neexistuje  
+        {/if}
+       <div id="clear2" class="clearer">
        {if !empty($comment[$num])}
-       Komentář autora: {$comment[$num]}{/if}
-
-       
+       <h2>Komentář o snímku od autora: {$comment[$num]}</h2>{/if}
+              </div>      
       </div>
       
+{* </a> *}
+
+
+       
+
 {/if}
 </div>
 

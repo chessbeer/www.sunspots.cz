@@ -35,13 +35,62 @@
 						if (!h)
 							h = temp.height;
 					}
-					
+          
+          
+          var left_top = new Array(2);
+					var coordinates = new Array(100);
+ 
+  for (var i = 0; i < 100; i++) {
+    coordinates[i] = new Array(4);
+  }
+          var j = 0;
 					var wPercent = $that.width()/100,
 						hPercent = $that.height()/100,
 						map = $that.attr('usemap').replace('#', ''),
 						c = 'coords';
             xx = 'style';
             xy = 'top';
+          
+          var imgos = $that.attr('jay'),
+          img_style  = 'style';
+         
+      function draw(j) {
+         var x = j;
+  var canvas = document.getElementById('canvas');
+      canvas.setAttribute('width', '700');
+canvas.setAttribute('height', '500');
+ 
+var img = document.getElementById('class_image'),
+style = window.getComputedStyle(img),
+    top = style.getPropertyValue('top');
+    var top2 = parseInt(top.replace('px', ''));
+    left = style.getPropertyValue('left');
+    var left2 = parseInt(left.replace('px', ''));
+
+      width = style.getPropertyValue('width');
+    var width2 = parseInt(width.replace('px', ''));
+      height = style.getPropertyValue('height');
+    var height2 = parseInt(height.replace('px', ''));
+    
+  if (canvas.getContext) {
+    var ctx = canvas.getContext('2d');
+
+ 
+      ctx.fillStyle = "#FF0000";
+      
+      ctx.clearRect(0, 0, 700, 500);
+ 
+ if (height2 != width2){
+       for (var i = 0; i < x; i++) {
+      
+   
+      ctx.fillRect((coordinates[i][0]+left2),(coordinates[i][1]+top2),(coordinates[i][2]-coordinates[i][0]),(coordinates[i][3]-coordinates[i][1]));
+  }
+  }
+}
+}
+          
+         
 					
 					$('map[name="' + map + '"]').find('a').each(function() {
 						var $this = $(this);
@@ -52,13 +101,27 @@
 							coordsPercent = new Array(coords.length);
 						
 						for (var i = 0; i < coordsPercent.length; ++i) {
-							if (i % 2 === 0)
+							if (i % 2 === 0) {
 								coordsPercent[i] = parseInt(((coords[i]/w)*100)*wPercent);
-							else
+               
+							}else{
 								coordsPercent[i] = parseInt(((coords[i]/h)*100)*hPercent);
 						}
+            coordinates[j][i] = coordsPercent[i];
+            }
+            j++;
+            
 						$this.attr(c, coordsPercent.toString());
+            
 					});
+          
+          draw(j);
+          
+        
+         
+        
+          
+          
           $('div').find('#border').each(function() {
 						var $this = $(this);
 						if (!$this.data(xx))

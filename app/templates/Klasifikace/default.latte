@@ -11,7 +11,7 @@
 });
           $(function(){
           if( $('#dependent-sub').val() === '' ){
-        alert('Dopln udaje');
+        alert('Doplň údaje');
         }
           });
           </script>
@@ -48,6 +48,7 @@
 
 {if !empty($zpc) && $zpc != '61'}
  <img src="{$basePath}/images/ok.png"/> 
+ <a n:href="delete! id =>$num">Smazat</a></li> 
 {/if}
 <div id="clear2">
 <a title="img" class="show_form" href="#">Klasifikovat</a>

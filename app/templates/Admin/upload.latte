@@ -1,5 +1,7 @@
 {block content}
 
+<h2>Nahrání snímku</h2>
+Vyberte obrázek, zadejte údaje a stiskěte tlačítko Nahrát!
 {form uploadForm}
 <div class="sign-in-form">
         {control $form errors}
@@ -7,6 +9,10 @@
         <div class="pair">
                 
                 <div class="input">{input obrazky}</div>
+        </div>
+        <div class="pair">
+                {label number /}
+                <div class="input">{input number}</div>
         </div>
         <div class="pair">
                 {label year /}

@@ -3,7 +3,7 @@ use Nette\Application\UI;
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 /**
- * Klasifikace presenter.
+ * Homepage presenter.
  */
 class KlasifikacePresenter extends BasePresenter {
     public function renderDefault($id) {
@@ -15,8 +15,8 @@ class KlasifikacePresenter extends BasePresenter {
 
 
 	$classification = $this->presenter->context->mongo->sunspots->classification;
-	$find_user = array("user" => $user, "prague_timestamp" => $image, "number" => $number);
-	$result = $classification->findOne(array("user" => $user, "prague_timestamp" => $image, "number" => $number));
+	$find_user = array("user" => $user, "img_id" => $image, "number" => $number);
+	$result = $classification->findOne(array("user" => $user, "img_id" => $image, "number" => $number));
   $mcintosh = $this->presenter->context->mongo->sunspots->McIntosh;              
   $mc_class = $mcintosh->find();
   $mcintosh_class = array();
@@ -27,12 +27,22 @@ class KlasifikacePresenter extends BasePresenter {
         }
     
   $crop_count=0;
-  $crop_image = $this->presenter->context->mongo->sunspots->crop_image;
-	    $result2 = $crop_image->find(array("prague_timestamp" => "$image.jpg"));
-	    foreach ($result2 as $row2 => $x2) {
-		$crop_count++;
-    }
-   
+  $crop_image = $this->presenter->context->mongo->sunspots->image;
+	    $result2 = $crop_image->findOne(array("_id" => $image));
+	 
+    if(!empty($result2['crop_images'])){
+      foreach ($result2['crop_images'] as $x2) {
+	         
+          
+  	$crop_count++;
+	    
+      }
+      }else{
+      $crop_count = 0;
+      }  
+    
+    
+       
     
 	$this-> template -> zpc = $result['zpc'];
 	$session->classification['zpc'] = $result['zpc'];
@@ -44,7 +54,7 @@ class KlasifikacePresenter extends BasePresenter {
   $this-> template -> crop_count = $crop_count;
   $this-> template -> number = intval($number);
    	
-	$other_class = $classification->find(array("prague_timestamp" => $image, "number" => $number));
+	$other_class = $classification->find(array("img_id" => $image, "number" => $number));
   $i=0;
 	$classifications = array();
   
@@ -69,7 +79,7 @@ class KlasifikacePresenter extends BasePresenter {
   
     
     $this-> template -> other_class =  $classifications;
-
+   // $this-> template -> other_class =  $class_email;
     }
 
     protected function createComponentKlasifikaceForm() {
@@ -155,6 +165,9 @@ class KlasifikacePresenter extends BasePresenter {
 
 	$form->addSubmit('cancel', 'Zavřít')->onClick[] = callback($this, 'cancelKlasifikaceFormSubmitted');
 
+
+
+	// call method KlasifikaceFormSucceeded() on success
 	
 	return $form;
     }
@@ -170,14 +183,20 @@ class KlasifikacePresenter extends BasePresenter {
 	$number = substr($values['num'], -1);
 
 	$classification = $this->presenter->context->mongo->sunspots->classification;
-	$find = array("user" => $user, "prague_timestamp" => $image, "number" => $number);
-	$insert = array("user" => $user, "prague_timestamp" => $image, "number" => $number, "zpc" => $values['klasifikace'], "comment" => $values['comment']);
+	$find = array("user" => $user, "img_id" => $image, "number" => $number);
+	$insert = array("user" => $user, "img_id" => $image, "number" => $number, "zpc" => $values['klasifikace'], "comment" => $values['comment']);
 
 
 
 	if($classification->update($find, $insert, array("upsert" => true))) {
-
-	    $this->flashMessage('Hodnocení přijato.');
+      if($values['klasifikace'] == '61' || $values['klasifikace'] == NULL){
+        $this->flashMessage('Změny provedeny. Zadal jste buď špatnou nebo prázdnou klasifikace. Vaše klasifikace je nyní prázdná');
+      
+      }else{
+      
+      
+	    $this->flashMessage('Změny provedeny.');
+      }
 	}
 
 	else {
@@ -227,7 +246,7 @@ class KlasifikacePresenter extends BasePresenter {
 	$number = substr($values['num'], -1);
 
 	$classification = $this->presenter->context->mongo->sunspots->classification;
-	$find = array("user" => $values['user'], "prague_timestamp" => $image, "number" => $number);
+	$find = array("user" => $values['user'], "img_id" => $image, "number" => $number);
 	$update = array('$set' => array("zpc" => $values['zpc']));
 
 
@@ -235,7 +254,8 @@ class KlasifikacePresenter extends BasePresenter {
 
 	if ($classification->update($find, $update)) {
 
-
+   $session = $this->presenter->getSession('data');
+	$user = $session->user['email'];
   $mcintosh = $this->presenter->context->mongo->sunspots->McIntosh;              
   $mc_class = $mcintosh->find();
   $mcintosh_class = array();
@@ -250,7 +270,7 @@ class KlasifikacePresenter extends BasePresenter {
   $subject = 'Změna klasifikace';
   $message = 'Dobrý den,
   
-  Vaše klasifikace skvrny číslo ' . $number . ' u snímku s ID ' .$image. ' byla změněna.
+  Vaše klasifikace skvrny číslo ' . $number . ' u snímku s číslem ' .$image. ' byla změněna uživatelem ' . $user .'.
   Správná klasifikace je '.$mcintosh_class[$values['zpc']].
   ' (Vaše původní klasifikace byla ' . $mcintosh_class[$values['user_zpc']]. ').
   Pokud máte nějaké připomínky, neváhejte nás kontaktovat.
@@ -267,7 +287,7 @@ class KlasifikacePresenter extends BasePresenter {
   $mailer = new SendmailMailer;
 if($mailer->send($mail)){
       
-     
+      //if(mail($values['user'], $subject, $message, $headers)){
          $this->flashMessage('Klasifikace opravena a uživatel upozorněn emailem.');
        }else{
 
@@ -282,6 +302,21 @@ if($mailer->send($mail)){
 
 
 
+    }
+    
+        public function handleDelete($id) {
+    $session = $this->presenter->getSession('data');
+	$user = $session->user['email'];
+	  $image = substr($id, 0, -2);
+    $number = substr($id, -1);
+
+ 
+	$classification = $this->presenter->context->mongo->sunspots->classification;
+  
+    if($classification->remove(array('user' => $user, 'img_id' => $image, 'number' => $number))){
+    $this->flashMessage('Klasifikace smazána.');}
+    else{
+    $this->flashMessage('Klasifikaci se nepoadařilo smazat.');}
     }
 
 }

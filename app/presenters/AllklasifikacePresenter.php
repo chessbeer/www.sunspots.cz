@@ -3,9 +3,9 @@ use Nette\Application\UI;
 
 
 /**
- * MojeKlasifikace presenter.
+ * AllKlasifikace presenter.
  */
-class MojeklasifikacePresenter extends BasePresenter {
+class AllklasifikacePresenter extends BasePresenter {
     public function renderDefault() {
 	
 	$session = $this->presenter->getSession('data');
@@ -14,8 +14,7 @@ class MojeklasifikacePresenter extends BasePresenter {
 
 
 	$classification = $this->presenter->context->mongo->sunspots->classification;
-	$find = array("user" => $user);
-	$result = $classification->find($find)->sort(array("img_id" => -1));
+	$result = $classification->find()->sort(array("img_id" => -1, "number" => 1));
   $count = 0;	
   foreach ($result as $row => $x) {
        $count++;
@@ -23,6 +22,7 @@ class MojeklasifikacePresenter extends BasePresenter {
 	    $number[$count] = $x['number'];
       $zpc[$count] = $x['zpc'];
       $comment[$count] = $x['comment'];
+      $email[$count] = $x['user'];
   }
   
   
@@ -41,6 +41,7 @@ class MojeklasifikacePresenter extends BasePresenter {
   $this-> template -> number = $number;
   $this-> template -> comment = $comment;
   $this-> template -> mcintosh = $mcintosh_class;
+  $this-> template -> user = $email;
   }
   $this-> template -> count = $count;
   
@@ -64,6 +65,20 @@ class MojeklasifikacePresenter extends BasePresenter {
     $this->flashMessage('Klasifikaci se nepoadařilo smazat.');}
     }
 
+       protected function startup() {
+	parent::startup();
+
+
+	$session = $this->presenter->getSession('data');
+	$user = $session->user;
+
+
+	if (intval($session->user['admin']) == 1 || intval($session->user['admin'] == 2)) {
+
+	} else {$this->redirect('Homepage:');}
+
+
+    }
  
 
 }

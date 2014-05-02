@@ -1,6 +1,7 @@
 #img img {
 width: 100%;
 height: auto;
+opacity: 0.9;
 }
 
 
@@ -19,4 +20,49 @@ height: 100%;
 map > ul{
   list-style-type: none;
 }
+#header2{
+float:left;
+width: 770px;
+text-align: right;
+}
 
+#images{
+float: left;
+}
+
+#question {
+float:right;
+width: 150px;
+}
+
+#que {
+position: relative;
+left: 100px;
+width: 150px;
+}
+
+#que > img{
+ width: 30%;
+ height: 30%;
+ left: 50px;
+}
+
+#que:hover + #que_img{
+display:block;
+
+}
+
+#que_img {
+    display: none;
+    position: relative;
+    z-index: 1;
+    bottom: 90px;
+    right: 170px;
+    width: 500%;
+    float: right;
+}
+
+#clear2 {
+overflow: auto;
+max-height: 88px;
+}

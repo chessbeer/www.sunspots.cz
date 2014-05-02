@@ -96,6 +96,7 @@
       if (settings.out_x2) { data.position.x2 = settings.out_x2.val()*settings.factor }
       if (settings.out_y2) { data.position.y2 = settings.out_y2.val()*settings.factor }
       methods.updatePosition.apply(this);
+      $('img[usemap]').rwdImageMaps();
     },
 
     'updatePosition': function() {
@@ -146,6 +147,7 @@
       data.position.y1 -= steps.pan.y;
       data.position.y2 -= steps.pan.y;
       methods.updatePosition.apply(this);
+      $('img[usemap]').rwdImageMaps();
     },
 
     'panDown': function () {
@@ -154,6 +156,7 @@
       data.position.y1 = data.position.y1*1 + steps.pan.y;
       data.position.y2 = data.position.y2*1 + steps.pan.y;
       methods.updatePosition.apply(this);
+      $('img[usemap]').rwdImageMaps();
     },
 
     'panLeft': function () {
@@ -162,6 +165,7 @@
       data.position.x1 -= steps.pan.x;
       data.position.x2 -= steps.pan.x;
       methods.updatePosition.apply(this);
+      $('img[usemap]').rwdImageMaps();
     },
 
     'panRight': function () {
@@ -170,6 +174,7 @@
       data.position.x1 = data.position.x1*1 + steps.pan.x;
       data.position.x2 = data.position.x2*1 + steps.pan.x;
       methods.updatePosition.apply(this);
+      $('img[usemap]').rwdImageMaps();
     },
 
     'mouseWheel': function (delta) {
@@ -194,6 +199,7 @@
       data.position.x2 = this.position().left*1 + this.width();
       data.position.y2 = this.position().top*1 + this.height();
       methods.updatePosition.apply(this);
+      $('img[usemap]').rwdImageMaps();
     },
 
     'mouseDown': function (action) {
@@ -316,7 +322,7 @@
     // image load
     $(this).bind('load.panZoom', eventData, function (event) { event.data.target.panZoom('loadImage') })
     data.bound_elements = data.bound_elements.add(this);
-
+    $('img[usemap]').rwdImageMaps();
   }
 
   function setupData() {
@@ -419,6 +425,7 @@
       console.log('left:' + left_offset);
       console.log('top:' + top_offset);
     }
+    $('img[usemap]').rwdImageMaps();
   }
 
   function applyCSS() {

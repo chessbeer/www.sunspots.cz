@@ -1,39 +1,30 @@
+{var $robots = noindex}
+
 {block content}
 
 <h1 n:block="title">Úprava osobních dat</h1>
 
 
 {form editForm}
-<div class="edit-form">
+<div class="sign-in-form">
         {control $form errors}
+
         <div class="pair">
                 {label name /}
-                <div class="input">{input name, value=> $log->name}</div>
+                <div class="input">{input name}</div>
         </div>
         <div class="pair">
-                {label surname /}
-                <div class="input">{input surname, value=> $log->surname}</div>
+                {label oldpassword /}
+                <div class="input">{input oldpassword}</div>
         </div>
-        <div class="pair">
-                {label title /}
-                <div class="input">{input title, value=> $log->title}</div>
-        </div>
-        <div class="pair">
-                {label year /}
-                <div class="input">{input year, value=> $log->year}</div>
-        </div>
-
-
-        
         <div class="pair">
                 {label password /}
                 <div class="input">{input password}</div>
         </div>
-         <div class="pair">
-                {label passwordVerify /}
-                <div class="input">{input passwordVerify}</div>
+        <div class="pair">
+                {label password2 /}
+                <div class="input">{input password2}</div>
         </div>
-       
 
         <div class="pair">
                 <div class="input">{input send}</div>

@@ -7,9 +7,9 @@
 {if $count!=0}
 <ul>
 {for $i=1;  $i <= $count; $i++}
-<li>Snímek ID: <a id="my_class">{$images[$i]}<div><img src="{$basePath}/obrazky/{$images[$i]}.jpg" width="80%"/></div></a>, skvrna číslo: 
+<li>Snímek ID: <a id="my_class">{$images[$i]}<div><img src="{$basePath}/obrazky/{$images[$i]}.jpg" width="80%"/></div></a>, oblast se skvrnami číslo: 
 <a id="my_class">{$number[$i]}<div><img src="{$basePath}/obrazky/{$images[$i]}/{$number[$i]}.jpg" width="50%"/></div></a>, vaše klasifikace je: {$mcintosh[$zpc[$i]]} {if !empty($comment[$i])}a komentář: {$comment[$i]}{/if} 
-<br /><a n:href="Klasifikace: id => $images[$i].'-'.$number[$i]">Upravit</a></li>
+<a n:href="Klasifikace: id => $images[$i].'-'.$number[$i]">Upravit</a><a n:href="delete! id =>($images[$i].'-'.$number[$i])">Smazat</a></li>  
 {/for}
 </ul>
 {else}

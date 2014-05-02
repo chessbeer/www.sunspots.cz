@@ -1,6 +1,7 @@
 <?php
 
-use Nette\Application\UI;
+use Nette\Application\UI,
+ Nette\Application\UI\Form;
 
 
 /**
@@ -11,7 +12,15 @@ class KontaktPresenter extends BasePresenter {
 
 
     protected function createComponentKontaktForm() {
-	$form = new UI\Form;
+	 $session = $this->presenter->getSession('data');
+	$user = $session->user;
+  
+  $form = new UI\Form;
+ 
+  if (empty($user)){
+  $form->addText('email', 'Email:')->setRequired('Email je povinný!')
+                    ->addRule(Form::EMAIL, 'Zadej emailovou adresu.');
+  }
 	$form->addText('subject', 'Předmět:')
 	    ->setRequired('Zadej předmět.');
 
@@ -19,8 +28,9 @@ class KontaktPresenter extends BasePresenter {
 	    ->setRequired('Nelze odeslat prázdnou zprávu.');
 
 	$form->addSubmit('send', 'Odeslat');
+ 
 
-
+	// call method signInFormSucceeded() on success
 	$form->onSuccess[] = $this->KontaktFormSucceeded;
 	return $form;
     }
@@ -32,8 +42,14 @@ class KontaktPresenter extends BasePresenter {
 	$values = $form->getValues();
 	$session = $this->presenter->getSession('data');
 	$user = $session->user;
+  if (empty($user)){
+  $user['email'] = $values['email'];
+  $register = "0";
+  }else{$register = "1";}
 	$contact = $this->presenter->context->mongo->sunspots->contact;
-	$insert = array("email" => $user['email'], "subject" => $values['subject'], "message" => $values['message']);
+    $date = date('Y-m-d H:i:s');
+
+	$insert = array("email" => $user['email'], "subject" => $values['subject'], "message" => $values['message'], "timestamp" => $date, "register" => $register);
 	if ($contact->insert($insert)) {
 
 	    $this->flashMessage('Zpráva odeslána.');

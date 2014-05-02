@@ -14,7 +14,7 @@ class HomepagePresenter extends BasePresenter {
   $session->redirect2['id']= $id;
 	$this -> template -> num = $id;
 	$image = $this->presenter->context->mongo->sunspots->image;
-  $result = $image->find();
+  $result = $image->find()->sort(array("_id" => -1));
 
 	if ($result == NULL) {
 	    $this['result']->addError('Vsechny snimky jste klasifikoval');
@@ -26,13 +26,34 @@ class HomepagePresenter extends BasePresenter {
 
 	    $images[] = $x['prague_timestamp'];
 	    $images_nasa[] = $x['nasa_timestamp'];
+      $images_number[] = $x['_id'];
       $comment[] = $x['comment'];
 
-	    $crop_image = $this->presenter->context->mongo->sunspots->crop_image;
+	 //   $crop_image = $this->presenter->context->mongo->sunspots->crop_image;
       $classification = $this->presenter->context->mongo->sunspots->classification;
-	    $result2 = $crop_image->find(array("prague_timestamp" => $x['prague_timestamp']));
+	 //   $result2 = $crop_image->find(array("prague_timestamp" => $x['prague_timestamp']));
 	    $class_all = true;
-      foreach ($result2 as $row2 => $x2) {
+      if(!empty($x['crop_images'])){
+      foreach ($x['crop_images'] as $x2) {
+ 	$crop_count++;
+	    $crop_images[$count][$crop_count][0] = $crop_count;
+		$crop_images[$count][$crop_count][1] = $x2['x1'];
+		$crop_images[$count][$crop_count][2] = $x2['x2'];
+		$crop_images[$count][$crop_count][3] = $x2['y1'];
+		$crop_images[$count][$crop_count][4] = $x2['y2'];
+    $classo = $classification->findOne(array("user" => $session->user['email'], "img_id" => $x['_id'], "number" => $x2['number']));
+      if($classo == NULL){
+        $class_all = false;
+            
+      }
+      
+      }
+      }else{
+      $crop_count = 0;
+      }  
+      
+      
+     /* foreach ($result2 as $row2 => $x2) {
 		$crop_count++;
 		$crop_images[$count][$crop_count][0] = $crop_count;
 		$crop_images[$count][$crop_count][1] = $x2['x1'];
@@ -45,7 +66,7 @@ class HomepagePresenter extends BasePresenter {
             
       }
       
-	    }
+	    }  */
        
       if ($class_all){
         $class_done[] = true;
@@ -61,6 +82,7 @@ class HomepagePresenter extends BasePresenter {
 	if (isset($images)) {
 	    $this -> template -> images = $images;
 	    $this -> template -> images_nasa = $images_nasa;
+      $this -> template -> images_number = $images_number;
       $this -> template -> comment = $comment;
 	    $this -> template -> crop_images_count = $crop_images_count;
       $this -> template -> class_done = $class_done;
